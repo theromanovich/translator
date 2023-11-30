@@ -17,27 +17,14 @@ if (!fs.existsSync(outputFolderPath)) {
 async function translateFile(filePath, targetLanguage) {
   const content = fs.readFileSync(filePath, 'utf-8');
 
-  // Находим блоки `--- ---` и сохраняем их без изменений
   const frontMatterRegex = /^---([\s\S]*?)---/;
-  const frontMatterMatch = content.match(frontMatterRegex);
-  const frontMatter = frontMatterMatch ? frontMatterMatch[0] : '';
-
-  // Исключаем блок `--- ---` из контента для перевода
-  const contentToTranslate = content.replace(frontMatter, '');
+  const contentWithoutFrontMatter = content.replace(frontMatterRegex, '');
 
   try {
-    // Переводим только значения ключей в блоке `--- ---`
-    const translatedFrontMatter = await Promise.all(frontMatter.match(/:([\s\S]*?)(?=(\w+:)|$)/g).map(async (match) => {
-      const translation = await translator.translateText(match.slice(1).trim(), null, targetLanguage);
-      return `: ${translation.text}`;
-    }));
-
-    // Переводим только контент без блока `--- ---`
-    const response = await translator.translateText(contentToTranslate, null, targetLanguage);
+    const response = await translator.translateText(contentWithoutFrontMatter, null, targetLanguage);
     console.log(response.text);
 
-    // Восстанавливаем оригинальные ключи и переведенный контент
-    const translatedContent = translatedFrontMatter.join('') + response.text;
+    const translatedContent = content.replace(contentWithoutFrontMatter, response.text);
     const outputFilePath = path.join(outputFolderPath, path.basename(filePath));
     fs.writeFileSync(outputFilePath, translatedContent, 'utf-8');
 
@@ -46,7 +33,6 @@ async function translateFile(filePath, targetLanguage) {
   }
 }
 
-// Получаем язык из аргументов командной строки или используем значение по умолчанию ('RU')
 const targetLanguage = process.argv[2] || 'RU';
 
 fs.readdirSync(inputFolderPath)
