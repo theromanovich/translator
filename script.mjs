@@ -44,7 +44,6 @@ async function translateFile(filePath, targetLanguage) {
     }));
 
     const response = await translator.translateText(contentToTranslate, null, targetLanguage);
-    console.log(response.text);
 
     const translatedContent = translatedFrontMatter.join('\n') + response.text;
     const outputFilePath = path.join(outputFolderPath, path.basename(filePath));
