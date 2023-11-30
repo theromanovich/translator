@@ -32,8 +32,8 @@ async function translateFile(filePath, targetLanguage) {
         const key = line.split(':')[0].trim();
         const value = line.slice(line.indexOf(':') + 1).trim();
         if (value !== '') {
-          const translation = await translator.translateText(value, null, targetLanguage);
           if (staticFrontMatterKeys.includes(key)) return `${key}: ${value}`
+          const translation = await translator.translateText(value, null, targetLanguage);
           return `${key}: ${translation.text}`;
         } else {
           return line;
