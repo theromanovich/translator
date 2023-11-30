@@ -22,6 +22,6 @@ npm run translate
 npm run translate UK
 ```
 
-(список підтримуємих мов)[https://developers.deepl.com/docs/resources/supported-languages#target-languages]
+[список підтримуємих мов](https://developers.deepl.com/docs/resources/supported-languages#target-languages)
 
 - перекладені сторінки будуть згенеровані в папці `translated_pages`
