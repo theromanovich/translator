@@ -23,6 +23,8 @@ async function translateFile(filePath, targetLanguage) {
 
   const contentToTranslate = content.replace(frontMatter, '');
 
+  const staticFrontMatterKeys = ['layout', 'permalink', 'ru_permalink']
+
   try {
     const frontMatterLines = frontMatter.split('\n');
     const translatedFrontMatter = await Promise.all(frontMatterLines.map(async (line) => {
@@ -31,6 +33,7 @@ async function translateFile(filePath, targetLanguage) {
         const value = line.slice(line.indexOf(':') + 1).trim();
         if (value !== '') {
           const translation = await translator.translateText(value, null, targetLanguage);
+          if (staticFrontMatterKeys.includes(key)) return `${key}: ${value}`
           return `${key}: ${translation.text}`;
         } else {
           return line;
