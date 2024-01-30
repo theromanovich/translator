@@ -67,7 +67,7 @@ async function translateFilesInFolders(inputFolderPath, outputFolderPath, target
       const stats = await fs.stat(inputItemPath);
 
       if (stats.isDirectory()) {
-        await translateFilesRecursively(inputItemPath, outputFolderPath, targetLanguage);
+        await translateFilesInFolders(inputItemPath, outputFolderPath, targetLanguage);
       } else if (stats.isFile() && item.endsWith('.md')) {
         await translateFile(inputItemPath, targetLanguage, outputFolderPath);
       }
