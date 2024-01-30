@@ -1,27 +1,27 @@
-# Перекладач .md сторінок
+# md Translator
 
-## Як це працює
+## How it works
 
-- встановлення залежностей 
+- Install dependencies
 
 ```bash
 npm i
 ```
 
-- в папку `pages` додаємо сторінки з розширенням `.md`
+- Add pages with the extension `.md` to the `pages` folder
 
-- запускаємо команду (по дефолту буде перекладено на російську мову)
+- Run the command (by default, it will be translated into Ukrainian)
 
 ```bash
 npm run translate
 ```
 
-Також можна передавати мову на яку треба перекласти (буде перекладено на українську)
+You can also specify the language for translation (it will be translated into Russian)
 
 ```
-npm run translate UK
+npm run translate RU
 ```
 
-[список підтримуємих мов](https://developers.deepl.com/docs/resources/supported-languages#target-languages)
+[List of supported languages](https://developers.deepl.com/docs/resources/supported-languages#target-languages)
 
-- перекладені сторінки будуть згенеровані в папці `translated_pages`
+- Translated pages will be generated in the `translated_pages` folder

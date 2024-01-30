@@ -2,9 +2,11 @@ import fs from 'fs/promises';
 import path from 'path';
 import * as deepl from 'deepl-node';
 
+// replace within deepl auth key
+const authKey = "a61df894-f751-d9de-ae0c-bd7a7a8f4b89:fx";
+
 const __dirname = new URL('.', import.meta.url).pathname;
 
-const authKey = "a61df894-f751-d9de-ae0c-bd7a7a8f4b89:fx";
 const translator = new deepl.Translator(authKey);
 
 const inputFolderPath = path.join(__dirname, 'pages');
@@ -20,6 +22,7 @@ async function translateFile(inputFilePath, targetLanguage, outputFolderPath) {
 
     const contentToTranslate = content.replace(frontMatter, '');
 
+    // specify keys for which translation is not needed
     const staticFrontMatterKeys = ['layout', 'permalink', 'ru_permalink'];
 
     const frontMatterLines = frontMatter.split('\n');
@@ -43,7 +46,6 @@ async function translateFile(inputFilePath, targetLanguage, outputFolderPath) {
 
     const translatedContent = translatedFrontMatter.join('\n') + response.text;
     
-    // Определяем относительный путь и создаем соответствующую папку в outputFolderPath
     const relativePath = path.relative(inputFolderPath, inputFilePath);
     const outputFilePath = path.join(outputFolderPath, relativePath);
 
@@ -55,7 +57,7 @@ async function translateFile(inputFilePath, targetLanguage, outputFolderPath) {
   }
 }
 
-async function translateFilesRecursively(inputFolderPath, outputFolderPath, targetLanguage) {
+async function translateFilesInFolders(inputFolderPath, outputFolderPath, targetLanguage) {
   try {
     const items = await fs.readdir(inputFolderPath);
 
@@ -76,8 +78,8 @@ async function translateFilesRecursively(inputFolderPath, outputFolderPath, targ
 }
 
 try {
-  const targetLanguage = process.argv[2] || 'RU';
-  await translateFilesRecursively(inputFolderPath, outputFolderPath, targetLanguage);
+  const targetLanguage = process.argv[2] || 'UK';
+  await translateFilesInFolders(inputFolderPath, outputFolderPath, targetLanguage);
 } catch (error) {
   console.error(`Error translating files: ${error.message}`);
 }
